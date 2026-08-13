@@ -1,0 +1,23 @@
+{
+  "name": "natours-nodejs",
+  "version": "1.0.0",
+  "description": "Learning NodeJS, ExpressJS and MongoDB",
+  "homepage": "https://github.com/arashms1994/natours-NodeJS#readme",
+  "bugs": {
+    "url": "https://github.com/arashms1994/natours-NodeJS/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arashms1994/natours-NodeJS.git"
+  },
+  "license": "ISC",
+  "author": "Arash Moghadam Salimi",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

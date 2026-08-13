@@ -1,0 +1,12 @@
+# Common ignores
+node_modules
+.next/
+.DS_Store
+dist
+.env
+.jpeg
+.png
+img
+
+# docs
+docs.md
