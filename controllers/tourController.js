@@ -17,8 +17,8 @@ export const checkID = (req, res, next, val) => {
 export const checkBody = (req, res, next) => {
   if (!req.body.name || !req.body.price) {
     return res.status(400).json({
-      staus: 'bad request',
-      message: 'name and price are required!',
+      staus: 'fail',
+      message: 'Missing name or price!',
     });
   }
   next();
