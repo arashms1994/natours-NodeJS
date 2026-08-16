@@ -1,6 +1,8 @@
 import express from 'express';
 import { readFileSync, writeFile } from 'fs';
 import morgan from 'morgan';
+import { tourRouter } from './routes/tourRoutes';
+import { userRouter } from './routes/userRoutes';
 
 const app = express();
 const port = 3000;
@@ -22,7 +24,6 @@ app.use((req, res, next) => {
 
 const tours = JSON.parse(readFileSync('./dev-data/data/tours-simple.json'));
 
-// ROUTE FNS ====================
 //=============== TOURS ====================
 export const getAllTours = (req, res) => {
   res.status(200).json({
@@ -139,24 +140,8 @@ export const createUser = (req, res) => {
   });
 };
 
-// ROUTES ======================
-//=============== TOURS ====================
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
-
-app
-  .route('/api/v1/tours/:id')
-  .get(getTourByID)
-  .patch(updateTour)
-  .delete(deleteTour);
-
-//=============== USERS ====================
-app.route('/api/v1/users').get(getAllUsers).post(createUser);
-
-app
-  .route('/api/v1/users/:id')
-  .get(getUserByID)
-  .patch(updateUser)
-  .delete(deleteUser);
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
 
 // START SERVER ================
 app.listen(port, () => {
