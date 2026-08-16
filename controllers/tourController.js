@@ -14,6 +14,16 @@ export const checkID = (req, res, next, val) => {
   next();
 };
 
+export const checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      staus: 'bad request',
+      message: 'name and price are required!',
+    });
+  }
+  next();
+};
+
 export const getAllTours = (req, res) => {
   res.status(200).json({
     staus: 'success',
