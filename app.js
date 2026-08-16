@@ -1,8 +1,13 @@
 import express from 'express';
 import { readFileSync, writeFile } from 'fs';
+import morgan from 'morgan';
 
 const app = express();
 const port = 3000;
+
+// MMIDDLEWARES ==================
+app.use(morgan('dev'));
+
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -17,6 +22,7 @@ app.use((req, res, next) => {
 
 const tours = JSON.parse(readFileSync('./dev-data/data/tours-simple.json'));
 
+// ROUTE FNS ====================
 export const getAllTours = (req, res) => {
   res.status(200).json({
     staus: 'success',
@@ -96,6 +102,7 @@ export const createTour = (req, res) => {
   );
 };
 
+// ROUTES ======================
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
 
 app
@@ -104,6 +111,7 @@ app
   .patch(updateTour)
   .delete(deleteTour);
 
+// START SERVER ================
 app.listen(port, () => {
   console.log(`App is Running on ${port}...`);
 });
