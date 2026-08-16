@@ -5,11 +5,22 @@ const app = express();
 const port = 3000;
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log('Hello from the middleware');
+  next();
+});
+
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
+
 const tours = JSON.parse(readFileSync('./dev-data/data/tours-simple.json'));
 
 export const getAllTours = (req, res) => {
   res.status(200).json({
     staus: 'success',
+    requestAt: req.requestTime,
     results: tours.length,
     data: {
       tours,
