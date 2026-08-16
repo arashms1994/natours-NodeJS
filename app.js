@@ -23,6 +23,7 @@ app.use((req, res, next) => {
 const tours = JSON.parse(readFileSync('./dev-data/data/tours-simple.json'));
 
 // ROUTE FNS ====================
+//=============== TOURS ====================
 export const getAllTours = (req, res) => {
   res.status(200).json({
     staus: 'success',
@@ -102,7 +103,44 @@ export const createTour = (req, res) => {
   );
 };
 
+//=============== USERS ====================
+export const getAllUsers = (req, res) => {
+  res.status(500).json({
+    staus: 'error',
+    message: 'This Route is not yet defined!',
+  });
+};
+
+export const getUserByID = (req, res) => {
+  res.status(500).json({
+    staus: 'error',
+    message: 'This Route is not yet defined!',
+  });
+};
+
+export const deleteUser = (req, res) => {
+  res.status(500).json({
+    staus: 'error',
+    message: 'This Route is not yet defined!',
+  });
+};
+
+export const updateUser = (req, res) => {
+  res.status(500).json({
+    staus: 'error',
+    message: 'This Route is not yet defined!',
+  });
+};
+
+export const createUser = (req, res) => {
+  res.status(500).json({
+    staus: 'error',
+    message: 'This Route is not yet defined!',
+  });
+};
+
 // ROUTES ======================
+//=============== TOURS ====================
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
 
 app
@@ -110,6 +148,15 @@ app
   .get(getTourByID)
   .patch(updateTour)
   .delete(deleteTour);
+
+//=============== USERS ====================
+app.route('/api/v1/users').get(getAllUsers).post(createUser);
+
+app
+  .route('/api/v1/users/:id')
+  .get(getUserByID)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 // START SERVER ================
 app.listen(port, () => {
