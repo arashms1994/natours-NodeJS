@@ -5,19 +5,9 @@ const app = express();
 const port = 3000;
 app.use(express.json());
 
-// app.get('/', (req, res) => {
-//   res
-//     .status(200)
-//     .json({ message: 'Hello from the server side!', app: 'natours' });
-// });
-
-// app.post('/', (req, res) => {
-//   res.send('You Can Post To this Endpoint...');
-// });
-
 const tours = JSON.parse(readFileSync('./dev-data/data/tours-simple.json'));
 
-app.get('/api/v1/tours', (req, res) => {
+export const getAllTours = (req, res) => {
   res.status(200).json({
     staus: 'success',
     results: tours.length,
@@ -25,9 +15,9 @@ app.get('/api/v1/tours', (req, res) => {
       tours,
     },
   });
-});
+};
 
-app.get('/api/v1/tours/:id', (req, res) => {
+export const getTourByID = (req, res) => {
   const id = +req.params.id;
   const tour = tours.find((t) => t.id === id);
 
@@ -44,9 +34,23 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tour,
     },
   });
-});
+};
 
-app.patch('/api/v1/tours/:id', (req, res) => {
+export const deleteTour = (req, res) => {
+  if (+req.params.id > tours.length) {
+    return res.status(404).json({
+      staus: 'fail',
+      message: 'invalid ID',
+    });
+  }
+
+  res.status(204).json({
+    staus: 'success',
+    data: null,
+  });
+};
+
+export const updateTour = (req, res) => {
   if (+req.params.id > tours.length) {
     return res.status(404).json({
       staus: 'fail',
@@ -60,9 +64,9 @@ app.patch('/api/v1/tours/:id', (req, res) => {
       tour: '<Updated Tour....>',
     },
   });
-});
+};
 
-app.post('/api/v1/tours', (req, res) => {
+export const createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
   tours.push(newTour);
@@ -79,7 +83,15 @@ app.post('/api/v1/tours', (req, res) => {
       });
     },
   );
-});
+};
+
+app.route('/api/v1/tours').get(getAllTours).post(createTour);
+
+app
+  .route('/api/v1/tours/:id')
+  .get(getTourByID)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 app.listen(port, () => {
   console.log(`App is Running on ${port}...`);
