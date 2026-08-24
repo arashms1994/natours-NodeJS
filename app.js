@@ -4,8 +4,9 @@ import { tourRouter } from './routes/tourRoutes.js';
 import { userRouter } from './routes/userRoutes.js';
 
 export const app = express();
-console.log(process.env.NODE_ENV);
-if (process.env.NODE_ENV.trim() === 'development') {
+console.log('NODE_ENV:', process.env.NODE_ENV);
+
+if ((process.env.NODE_ENV || '').trim() === 'development') {
   app.use(morgan('dev'));
 }
 

@@ -15,12 +15,13 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
+    "start": "nodemon server.js",
     "start:prod": "set NODE_ENV=production && nodemon server.js"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "mongoose": "^9.9.3",
     "morgan": "^1.11.0"
   },
   "devDependencies": {
