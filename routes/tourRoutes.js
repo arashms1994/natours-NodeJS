@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import {
   checkBody,
-  checkID,
   createTour,
   deleteTour,
   getAllTours,
@@ -11,7 +10,7 @@ import {
 
 export const tourRouter = Router();
 
-tourRouter.param('id', checkID);
+// tourRouter.param('id', checkID);
 
 tourRouter.route('/').get(getAllTours).post(checkBody, createTour);
 
