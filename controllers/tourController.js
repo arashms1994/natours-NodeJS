@@ -1,15 +1,5 @@
 import { Tour } from '../models/tourModel.js';
 
-export const checkBody = (req, res, next) => {
-  if (!req.body.name || !req.body.price) {
-    return res.status(400).json({
-      staus: 'fail',
-      message: 'Missing name or price!',
-    });
-  }
-  next();
-};
-
 export const getAllTours = (req, res) => {
   // res.status(200).json({
   //   staus: 'success',
@@ -46,11 +36,20 @@ export const updateTour = (req, res) => {
   });
 };
 
-export const createTour = (req, res) => {
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: newTour,
-    },
-  });
+export const createTour = async (req, res) => {
+  try {
+    const newTour = await Tour.create(req.body);
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour: newTour,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      staus: 'fail',
+      message: 'Invalid Data Sent!',
+    });
+  }
 };
