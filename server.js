@@ -4,6 +4,8 @@ dotenv.config({ path: './.env' });
 import mongoose from 'mongoose';
 import { app } from './app.js';
 
+app.set('query parser', 'extended');
+
 const port = process.env.PORT;
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
