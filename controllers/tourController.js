@@ -1,59 +1,60 @@
 import { Tour } from '../models/tourModel.js';
 
+export const aliasTopTours = (req, res, next) => {
+  req.aliasQuery = {
+    limit: '5',
+    sort: '-ratingsAverage,price',
+    fields: 'name,price,ratingsAverage,summary,difficulty',
+  };
+
+  next();
+};
+
 export const getAllTours = async (req, res) => {
   try {
-    const queryObj = { ...req.query };
+    const queryParams = req.aliasQuery || req.query;
+
+    const queryObj = { ...queryParams };
+
     const excludedFields = ['page', 'limit', 'sort', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
 
     let queryStr = JSON.stringify(queryObj);
+
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
-    console.log(JSON.parse(queryStr));
 
     let query = Tour.find(JSON.parse(queryStr));
 
-    // SORTNG
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(',').join(' ');
+    // SORTING
+    if (queryParams.sort) {
+      const sortBy = queryParams.sort.split(',').join(' ');
+
       query = query.sort(sortBy);
     } else {
       query = query.sort('-createdAt');
     }
 
     // FIELD LIMITING
-    if (req.query.fields) {
-      const fields = req.query.fields.split(',').join(' ');
+    if (queryParams.fields) {
+      const fields = queryParams.fields.split(',').join(' ');
+
       query = query.select(fields);
     } else {
       query = query.select('-__v');
     }
 
     // PAGINATION
-    const page = +req.query.page || 1;
-    const limit = +req.query.limit || 100;
+    const page = +queryParams.page || 1;
+    const limit = +queryParams.limit || 100;
+
     const skip = (page - 1) * limit;
 
     query = query.skip(skip).limit(limit);
 
-    if (req.query.page) {
-      const numTours = await Tour.countDocuments();
-      console.log(numTours);
-      if (skip >= numTours) throw new Error('This Page Does Not Exist!');
-    }
-
     const tours = await query;
-    // {duration:'easy', difficulty:{$gte:5}}
 
-    // const query = Tour.find()
-    //   .where('duration')
-    //   .equals(5)
-    //   .where('difficulty')
-    //   .equals('easy');
-
-    // RESPONSE
     res.status(200).json({
-      staus: 'success',
-      requestAt: req.requestTime,
+      status: 'success',
       results: tours.length,
       data: {
         tours,
@@ -61,8 +62,8 @@ export const getAllTours = async (req, res) => {
     });
   } catch (err) {
     res.status(404).json({
-      staus: 'fail',
-      message: err,
+      status: 'fail',
+      message: err.message,
     });
   }
 };
