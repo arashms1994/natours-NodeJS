@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import {
-  aliasTopTours,
   createTour,
   deleteTour,
   getAllTours,
   getTourByID,
   updateTour,
 } from '../controllers/tourController.js';
+import { aliasTopTours } from '../utils/aliasTopTours.js';
 
 export const tourRouter = Router();
 
