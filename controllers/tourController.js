@@ -92,9 +92,12 @@ export const createTour = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
+
     res.status(400).json({
-      staus: 'fail',
-      message: 'Invalid Data Sent!',
+      status: 'fail',
+      message: err.message,
+      error: err,
     });
   }
 };
